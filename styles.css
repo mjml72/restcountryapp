@@ -1,0 +1,195 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    background-color: rgb(251, 236, 214);
+}
+
+header {
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+.header-container {
+
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header-container div {
+    cursor: pointer;
+    display: flex;
+    gap: 1rem;
+}
+
+.box-style {
+    border: none;
+    border-radius: 5px;
+    outline: none;
+}
+
+/* Form  */
+
+.form-container {
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 0 1rem;
+
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem
+}
+
+form div {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: right;
+    gap: 1rem;
+}
+
+form button {
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 1rem;
+}
+
+form button:hover,form button:active {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+form div input {
+    padding: 1rem;
+    font-size: 1rem;
+    max-width: 80%;
+}
+
+form select {
+    padding: 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+/* Main info  */
+
+.main-info {
+    max-width: 1200px;
+    margin: 1rem auto 5rem auto;
+    padding: 0 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3.5rem;
+
+}
+
+.countrydiv {
+    background-color: rgb(255, 248, 240);
+    width: 250px;
+    margin: 1rem 0;
+    border-radius: 5px;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.infodiv {
+    width: 100%;
+    padding: 1rem;
+}
+
+.infodiv h3 {
+    text-align: center;
+}
+
+.infodiv p {
+    margin-top: 1rem;
+}
+
+.infodivimg {
+    width: 100%;
+}
+
+.onecountry {
+    background-color: rgb(255, 248, 240);
+    margin-top: 3rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 100%;
+    padding: 1rem 1rem 3rem 1rem;
+    border-radius: 5px;
+    gap: 1rem;
+}
+
+.onecountry p {
+    margin-bottom: 1.2rem;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.onecountry div {
+    margin-top: 1rem;
+    text-align: left;
+    min-width: 40%;
+}
+
+.onecountry img {
+    max-width: 100%;
+}
+
+.onecountry h3 {
+    margin-top: 1rem;
+    font-size: 2rem;
+    text-align: center;
+    display: block;
+    width: 100%;
+}
+
+/* Dark mode */
+.hidden {
+    display: none;
+}
+.light {
+    color: white;
+}
+.darkBackground {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+}
+.dark {
+    background-color: rgb(75, 75, 75);
+    color: white;
+
+}
+.formbuttondark {
+    background-color: rgb(255, 209, 209, 0.1);
+    color: white;
+}
+
+@media screen and (max-width: 700px) {
+    .onecountry{
+        justify-content: center;
+    }
+    .onecountry div{
+        width: 100%;
+        text-align: center;
+    }
+}
