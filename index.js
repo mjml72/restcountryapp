@@ -1,25 +1,35 @@
 const countryInput = document.getElementById("country-search");
 const inputBtn = document.getElementById("search-btn");
 const mainInfoDiv = document.getElementById("main-info");
-const regionOption = document.getElementById("region");
+const region = document.getElementById("region");
+const regionContainer = document.getElementById("region-container");
+const continent = document.getElementsByClassName("continent");
 const mode = document.getElementById("mode");
 const moon = document.getElementById("moon");
 const sun = document.getElementById("sun");
 const moonsunText = document.getElementById("moon-sun-text");
 
 mode.addEventListener("click", darkMode);
-regionOption.addEventListener("change", searchContinent);
+region.addEventListener("click", function () {
+    regionContainer.classList.toggle("show");
+});
+
+for (let i = 0; i < continent.length; i++) {
+    continent[i].addEventListener("click", searchContinent);
+}
+
 inputBtn.addEventListener("click", searchCountry);
 
 
 async function searchContinent(event) {
 
+    let regionContinent = event.target.textContent;
+    countryInput.value = "";
     event.preventDefault();
-    mainInfoDiv.innerHTML = "";
-    let region = regionOption.value;
+    mainInfoDiv.innerText = "";
 
     try {
-        let response = await fetch(`https://restcountries.com/v3.1/region/${region}`);
+        let response = await fetch(`https://restcountries.com/v3.1/region/${regionContinent}`);
         let data = await response.json();
         showMoreCountries(data);
     } catch (error) {
@@ -30,9 +40,10 @@ async function searchContinent(event) {
 
 
 async function searchCountry(event) {
-
+    
     event.preventDefault();
-    mainInfoDiv.innerHTML = "";
+    regionContainer.classList.remove("show");
+    mainInfoDiv.innerText = "";
     let country = countryInput.value;
 
     try {
@@ -51,7 +62,11 @@ async function searchCountry(event) {
 
 function showMoreCountries(data) {
 
-    regionOption.value = "";
+    data = data.sort((a, b) => {
+        if(a.name.common < b.name.common){
+            return -1;
+        }
+    });
 
     for (let i = 0; i < data.length; i++) {
 
@@ -71,15 +86,15 @@ function showMoreCountries(data) {
         countryDiv.appendChild(infoDiv);
 
         let nombre = document.createElement("h3");
-        nombre.innerHTML = data[i].name.common;
+        nombre.innerText = data[i].name.common;
         infoDiv.appendChild(nombre);
 
         let capital = document.createElement("p");
-        capital.innerHTML = `Capital: ${data[i].capital}`;
+        capital.innerText = `Capital: ${data[i].capital}`;
         infoDiv.appendChild(capital);
 
         let region = document.createElement("p");
-        region.innerHTML = `Continent: ${data[i].region}`;
+        region.innerText = `Continent: ${data[i].region}`;
         infoDiv.appendChild(region);
 
         mainInfoDiv.appendChild(countryDiv);
@@ -89,10 +104,9 @@ function showMoreCountries(data) {
 
         mainInfoDiv.children[i].addEventListener("click", ()=>{
             countryInput.value = data[i].name.common;
-            
         });
-
         mainInfoDiv.children[i].addEventListener("click", searchCountry);
+
         
     }    
 }
@@ -102,7 +116,6 @@ function showMoreCountries(data) {
 
 function showCountry(data) {
 
-    countryInput.value = "";
     let oneCountry = document.createElement("div");
     oneCountry.classList.add("onecountry");
 
@@ -111,7 +124,7 @@ function showCountry(data) {
     }
 
     let nombre = document.createElement("h3");
-    nombre.innerHTML = data[0].name.common;
+    nombre.innerText = data[0].name.common;
     oneCountry.appendChild(nombre);
 
     let imgDiv = document.createElement("div");   
@@ -124,37 +137,39 @@ function showCountry(data) {
 
 
     let capital = document.createElement("p");
-    capital.innerHTML = `Capital: ${data[0].capital}`;
+    capital.innerText = `Capital: ${data[0].capital}`;
 
     info1.appendChild(capital);
 
     let continente = document.createElement("p");
-    continente.innerHTML = `Continent: ${data[0].region}`;
+    continente.innerText = `Continent: ${data[0].region}`;
     info1.appendChild(continente);
 
     let region = document.createElement("p");
-    region.innerHTML = `Region: ${data[0].subregion}`;
+    region.innerText = `Region: ${data[0].subregion}`;
     info1.appendChild(region);
 
 
     let idiomas = document.createElement("p");
-    idiomas.innerHTML = `Languages: `;
+    idiomas.innerText = `Languages: `;
+
     for (const key in data[0].languages) {
-        idiomas.innerHTML += " " + data[0].languages[key];
+        idiomas.innerText += " " + data[0].languages[key];
     }
+
     info1.appendChild(idiomas);
 
 
     let lat = document.createElement("p");
-    lat.innerHTML = `Latitude: ${data[0].latlng[0]}`;
+    lat.innerText = `Latitude: ${data[0].latlng[0]}`;
     info1.appendChild(lat);
 
     let lon = document.createElement("p");
-    lon.innerHTML = `Longitude: ${data[0].latlng[1]}`;
+    lon.innerText = `Longitude: ${data[0].latlng[1]}`;
     info1.appendChild(lon);
 
     let area = document.createElement("p");
-    area.innerHTML = `Area: ${data[0].area}`;
+    area.innerText = `Area: ${data[0].area}`;
     info1.appendChild(area);
 
     oneCountry.appendChild(imgDiv);
@@ -175,10 +190,11 @@ function darkMode() {
 
     document.body.classList.toggle("darkBackground");
     document.querySelector("header").classList.toggle("dark");
-    inputBtn.classList.toggle("formbuttondark");
+    inputBtn.classList.toggle("dark");
 
-    regionOption.classList.toggle("dark");
+    region.classList.toggle("dark");
     countryInput.classList.toggle("dark");
+    regionContainer.classList.toggle("dark");
 
     for (const child of mainInfoDiv.children) {
         child.classList.toggle("dark");

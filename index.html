@@ -25,18 +25,22 @@
     </header>
     <div class="form-container">
         <form>
-            <div>
-                <input type="search" id="country-search" placeholder="Search country" class="box-style">
+            <div class="input-container">
+                <input type="search" id="country-search" placeholder="Name" class="box-style">
                 <button  class="box-style" id="search-btn">Buscar</button>
             </div> 
-            <select name="region" id="region" class="box-style">
-                <option value="">Filter by continent</option>
-                <option value="europe">Europe</option>
-                <option value="africa">Africa</option>
-                <option value="america">America</option>
-                <option value="asia">Asia</option>
-                <option value="oceania">Oceania</option>
-            </select>           
+            <div id="region" class="box-style region">
+                <span>Filter by continent</span><span class="material-symbols-outlined">
+                    expand_more
+                    </span>
+                    <div class="box-style region-container" id="region-container">
+                        <div class="continent">Europe</div>
+                        <div class="continent">Africa</div>
+                        <div class="continent">America</div>
+                        <div class="continent">Asia</div>
+                        <div class="continent">Oceania</div>
+                    </div>
+            </div>           
         </form>
     </div>
     <div class="main-info" id="main-info"></div>
