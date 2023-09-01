@@ -9,6 +9,19 @@ const moon = document.getElementById("moon");
 const sun = document.getElementById("sun");
 const moonsunText = document.getElementById("moon-sun-text");
 
+
+
+window.addEventListener("load", loadPage);
+
+async function loadPage() {
+    
+    let response = await fetch("https://restcountries.com/v3.1/all");
+
+    let data = await response.json();
+
+    showMoreCountries(data);
+}
+
 mode.addEventListener("click", darkMode);
 region.addEventListener("click", function () {
     regionContainer.classList.toggle("show");
@@ -18,7 +31,12 @@ for (let i = 0; i < continent.length; i++) {
     continent[i].addEventListener("click", searchContinent);
 }
 
-inputBtn.addEventListener("click", searchCountry);
+inputBtn.addEventListener("click", (event)=>{
+    event.preventDefault();
+    let country = countryInput.value;
+    searchCountry(country);
+    countryInput.value = "";
+});
 
 
 async function searchContinent(event) {
@@ -39,12 +57,9 @@ async function searchContinent(event) {
 
 
 
-async function searchCountry(event) {
-    
-    event.preventDefault();
+async function searchCountry(country) {
     regionContainer.classList.remove("show");
     mainInfoDiv.innerText = "";
-    let country = countryInput.value;
 
     try {
         let response = await fetch(`https://restcountries.com/v3.1/name/${country}`);
@@ -55,63 +70,6 @@ async function searchCountry(event) {
         console.error(error);
     }
 }
-
-
-
-
-
-function showMoreCountries(data) {
-
-    data = data.sort((a, b) => {
-        if(a.name.common < b.name.common){
-            return -1;
-        }
-    });
-
-    for (let i = 0; i < data.length; i++) {
-
-        let countryDiv = document.createElement("div");
-        countryDiv.classList.add("countrydiv");
-        if(document.body.classList.contains("darkBackground")){
-            countryDiv.classList.add("dark");
-        }
-
-        let bandera = document.createElement("img");
-        bandera.src = data[i].flags.png;
-        bandera.classList.add("infodivimg");
-        countryDiv.appendChild(bandera);
-
-        let infoDiv = document.createElement("div");
-        infoDiv.classList.add("infodiv");
-        countryDiv.appendChild(infoDiv);
-
-        let nombre = document.createElement("h3");
-        nombre.innerText = data[i].name.common;
-        infoDiv.appendChild(nombre);
-
-        let capital = document.createElement("p");
-        capital.innerText = `Capital: ${data[i].capital}`;
-        infoDiv.appendChild(capital);
-
-        let region = document.createElement("p");
-        region.innerText = `Continent: ${data[i].region}`;
-        infoDiv.appendChild(region);
-
-        mainInfoDiv.appendChild(countryDiv);
-    }
-
-    for (let i = 0; i < mainInfoDiv.children.length; i++) {
-
-        mainInfoDiv.children[i].addEventListener("click", ()=>{
-            countryInput.value = data[i].name.common;
-        });
-        mainInfoDiv.children[i].addEventListener("click", searchCountry);
-
-        
-    }    
-}
-
-
 
 
 function showCountry(data) {
@@ -178,6 +136,65 @@ function showCountry(data) {
     mainInfoDiv.appendChild(oneCountry);
 
 }
+
+
+
+function showMoreCountries(data) {
+
+    data = data.sort((a, b) => {
+        if(a.name.common < b.name.common){
+            return -1;
+        }
+    });
+
+    for (let i = 0; i < data.length; i++) {
+
+        let countryDiv = document.createElement("div");
+        countryDiv.classList.add("countrydiv");
+        if(document.body.classList.contains("darkBackground")){
+            countryDiv.classList.add("dark");
+        }
+
+
+        let bandera = document.createElement("img");
+        bandera.src = data[i].flags.png;
+        bandera.classList.add("infodivimg");
+        countryDiv.appendChild(bandera);
+
+        let infoDiv = document.createElement("div");
+        infoDiv.classList.add("infodiv");
+        countryDiv.appendChild(infoDiv);
+
+        let nombre = document.createElement("h3");
+        nombre.innerText = data[i].name.common;
+        infoDiv.appendChild(nombre);
+
+        let capital = document.createElement("p");
+        capital.innerText = `Capital: ${data[i].capital}`;
+        infoDiv.appendChild(capital);
+
+        let region = document.createElement("p");
+        region.innerText = `Continent: ${data[i].region}`;
+        infoDiv.appendChild(region);
+
+        mainInfoDiv.appendChild(countryDiv);
+    }
+
+    for (let i = 0; i < mainInfoDiv.children.length; i++) {
+
+        mainInfoDiv.children[i].addEventListener("click", ()=>{
+            let country = data[i].name.common;
+
+            searchCountry(country);
+        });
+
+       
+    }    
+}
+
+
+
+
 
 
 
