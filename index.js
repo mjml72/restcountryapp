@@ -8,18 +8,26 @@ const mode = document.getElementById("mode");
 const moon = document.getElementById("moon");
 const sun = document.getElementById("sun");
 const moonsunText = document.getElementById("moon-sun-text");
+const allBtn = document.getElementById("all");
 
 
+window.addEventListener("load", fetchAll);
+allBtn.addEventListener("click", fetchAll);
 
-window.addEventListener("load", loadPage);
+async function fetchAll() {
 
-async function loadPage() {
+    mainInfoDiv.innerText = "";
+
+    try{
+        let response = await fetch("https://restcountries.com/v3.1/all");
     
-    let response = await fetch("https://restcountries.com/v3.1/all");
+        let data = await response.json();
+    
+        showMoreCountries(data);
 
-    let data = await response.json();
-
-    showMoreCountries(data);
+    }catch(error){
+        console.error(error);
+    }
 }
 
 mode.addEventListener("click", darkMode);
@@ -70,6 +78,65 @@ async function searchCountry(country) {
         console.error(error);
     }
 }
+
+
+
+
+
+function showMoreCountries(data) {
+
+    data = data.sort((a, b) => {
+        if(a.name.common < b.name.common){
+            return -1;
+        }
+    });
+
+    for (let i = 0; i < data.length; i++) {
+
+        let countryDiv = document.createElement("div");
+        countryDiv.classList.add("countrydiv");
+        if(document.body.classList.contains("darkBackground")){
+            countryDiv.classList.add("dark");
+        }
+
+
+        let bandera = document.createElement("img");
+        bandera.src = data[i].flags.png;
+        bandera.classList.add("infodivimg");
+        countryDiv.appendChild(bandera);
+
+        let infoDiv = document.createElement("div");
+        infoDiv.classList.add("infodiv");
+        countryDiv.appendChild(infoDiv);
+
+        let nombre = document.createElement("h3");
+        nombre.innerText = data[i].name.common;
+        infoDiv.appendChild(nombre);
+
+        let capital = document.createElement("p");
+        capital.innerText = `Capital: ${data[i].capital}`;
+        infoDiv.appendChild(capital);
+
+        let region = document.createElement("p");
+        region.innerText = `Continent: ${data[i].region}`;
+        infoDiv.appendChild(region);
+
+        mainInfoDiv.appendChild(countryDiv);
+    }
+
+    for (let i = 0; i < mainInfoDiv.children.length; i++) {
+
+        mainInfoDiv.children[i].addEventListener("click", ()=>{
+            let country = data[i].name.common;
+
+            searchCountry(country);
+        });
+
+       
+    }    
+}
+
+
 
 
 function showCountry(data) {
@@ -139,65 +206,6 @@ function showCountry(data) {
 
 
 
-function showMoreCountries(data) {
-
-    data = data.sort((a, b) => {
-        if(a.name.common < b.name.common){
-            return -1;
-        }
-    });
-
-    for (let i = 0; i < data.length; i++) {
-
-        let countryDiv = document.createElement("div");
-        countryDiv.classList.add("countrydiv");
-        if(document.body.classList.contains("darkBackground")){
-            countryDiv.classList.add("dark");
-        }
-
-
-        let bandera = document.createElement("img");
-        bandera.src = data[i].flags.png;
-        bandera.classList.add("infodivimg");
-        countryDiv.appendChild(bandera);
-
-        let infoDiv = document.createElement("div");
-        infoDiv.classList.add("infodiv");
-        countryDiv.appendChild(infoDiv);
-
-        let nombre = document.createElement("h3");
-        nombre.innerText = data[i].name.common;
-        infoDiv.appendChild(nombre);
-
-        let capital = document.createElement("p");
-        capital.innerText = `Capital: ${data[i].capital}`;
-        infoDiv.appendChild(capital);
-
-        let region = document.createElement("p");
-        region.innerText = `Continent: ${data[i].region}`;
-        infoDiv.appendChild(region);
-
-        mainInfoDiv.appendChild(countryDiv);
-    }
-
-    for (let i = 0; i < mainInfoDiv.children.length; i++) {
-
-        mainInfoDiv.children[i].addEventListener("click", ()=>{
-            let country = data[i].name.common;
-
-            searchCountry(country);
-        });
-
-       
-    }    
-}
-
-
-
-
-
-
-
 
 function darkMode() {
 
@@ -212,6 +220,8 @@ function darkMode() {
     region.classList.toggle("dark");
     countryInput.classList.toggle("dark");
     regionContainer.classList.toggle("dark");
+    allBtn.classList.toggle("dark");
+
 
     for (const child of mainInfoDiv.children) {
         child.classList.toggle("dark");
