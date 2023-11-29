@@ -21,7 +21,7 @@ export function showCountry(data) {
     let info1 = document.createElement("div");
 
     let capital = document.createElement("p");
-    capital.innerText = `Capital: ${data[0].capital}`;
+    capital.innerText = `Capital: ${data[0].capital ?? ""}`;
 
     info1.appendChild(capital);
 
@@ -79,10 +79,9 @@ export function showMoreCountries(data) {
             countryDiv.classList.add("dark");
         }
 
-
         let bandera = document.createElement("img");
         bandera.src = data[i].flags.png;
-        bandera.classList.add("infodivimg");
+        bandera.classList.add("bandera");
         countryDiv.appendChild(bandera);
 
         let infoDiv = document.createElement("div");
@@ -94,7 +93,7 @@ export function showMoreCountries(data) {
         infoDiv.appendChild(nombre);
 
         let capital = document.createElement("p");
-        capital.innerText = `Capital: ${data[i].capital}`;
+        capital.innerText = `Capital: ${data[i].capital ?? ""}`;
         infoDiv.appendChild(capital);
 
         let region = document.createElement("p");

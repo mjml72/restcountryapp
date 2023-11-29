@@ -16,14 +16,12 @@ mode.addEventListener("click", darkMode);
 window.addEventListener("load", fetchAll);
 
 
-
-
 async function fetchAll() {
 
     mainInfoDiv.innerText = "";
 
     try {
-        let response = await fetch("https://restcountries.com/v3.1/all");
+        let response = await fetch("https://restcountries.com/v3.1/all?fields=flags,name,capital,region");
 
         let data = await response.json();
 
@@ -35,18 +33,13 @@ async function fetchAll() {
 }
 
 
-
 region.addEventListener("click", function () {
     regionContainer.classList.toggle("show");
 });
 
-
-
 for (let i = 0; i < continent.length; i++) {
     continent[i].addEventListener("click", searchContinent);
 }
-
-
 
 inputBtn.addEventListener("click", (event) => {
 
@@ -56,8 +49,6 @@ inputBtn.addEventListener("click", (event) => {
     countryInput.value = "";
 
 });
-
-
 
 
 async function searchContinent(event) {
@@ -80,7 +71,19 @@ async function searchContinent(event) {
 }
 
 
+function notFound(texto) {
+    let message = document.createElement("div");
+    message.classList.add("message");
 
+    if (document.body.classList.contains("darkBackground")) {
+        message.classList.add("dark");
+    }
+
+    let text = document.createElement("h4");
+    text.innerText = texto;
+    message.appendChild(text);
+    mainInfoDiv.appendChild(message);
+}
 
 
 export async function searchCountry(country) {
@@ -89,17 +92,25 @@ export async function searchCountry(country) {
     mainInfoDiv.innerText = "";
 
     try {
-
-        let response = await fetch(`https://restcountries.com/v3.1/translation/${country}`);
+        let response;
+        response = await fetch(`https://restcountries.com/v3.1/name/${country}`);
+        if (response.status !== 200) {
+            response = await fetch(`https://restcountries.com/v3.1/translation/${country}`);
+            if (response.status !== 200) {
+                throw "Not Found. Try it Again!";
+            }
+        }
         let data = await response.json();
         showCountry(data);
 
+
+
+
     } catch (error) {
 
-        alert("Not Found. Try it again");
         console.error(error);
+        notFound(error);
     }
-
 
 }
 
