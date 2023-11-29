@@ -1,4 +1,4 @@
-import { mainInfoDiv } from "./index.js";
+import { mainInfoDiv, searchCountry } from "./index.js";
 
 export function showCountry(data) {
 

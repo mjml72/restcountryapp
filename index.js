@@ -83,7 +83,7 @@ async function searchContinent(event) {
 
 
 
-async function searchCountry(country) {
+export async function searchCountry(country) {
 
     regionContainer.classList.remove("show");
     mainInfoDiv.innerText = "";
